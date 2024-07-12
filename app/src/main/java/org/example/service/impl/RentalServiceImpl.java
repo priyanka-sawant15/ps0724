@@ -30,7 +30,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public RentalTerms checkout(String toolCode, String date, int duration, int discountPercent) throws RentalServiceException {
         if (duration  < 1) {
-            throw new InvalidDurationException("The duration of the rental must be more than one day." +
+            throw new InvalidDurationException("The duration of the rental must be one or more than one day." +
                     " The duration provided was: " + duration);
         }
         if (discountPercent < 0 || discountPercent > 100) {
