@@ -65,7 +65,7 @@ public class RentalServiceImpl implements RentalService {
 
         agreement.setDailyRentalCharge(tool.getDailyCharge());
 
-        var preDiscountCharge = tool.calculateCharge(chargeDays);
+        var preDiscountCharge = (float)tool.calculateCharge(chargeDays);
         agreement.setPreDiscountCharge(preDiscountCharge);
 
         agreement.setDiscountPercent(discountPercent);

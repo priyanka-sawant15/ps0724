@@ -20,7 +20,7 @@ public class RentalTermsTest {
         agreement.setDueDate(LocalDate.of(2021, Month.JULY, 7));
         agreement.setDailyRentalCharge(tool.getDailyCharge());
 
-        var preDiscount = tool.calculateCharge(agreement.getCheckoutDate(), agreement.getRentalDays());
+        var preDiscount = (float)tool.calculateCharge(agreement.getCheckoutDate(), agreement.getRentalDays());
         preDiscount = Math.round(preDiscount * 100.0F) / 100.0F;
         agreement.setPreDiscountCharge(preDiscount);
 

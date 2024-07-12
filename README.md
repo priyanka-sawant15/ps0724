@@ -1,5 +1,7 @@
 # ps0724
 
+## Initialize the project
+gradle init --type java-application  --dsl groovy
 
 ## Run locally
 Unix
@@ -16,4 +18,12 @@ Windows
 .\gradlew.bat build
 .\gradlew.bat run
 
-```
+.\gradlew.bat jar
+
+
+.\gradlew.bat :app:clean :app:build
+
+
+
+
+````
