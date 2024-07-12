@@ -45,4 +45,8 @@ application {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        outputs.upToDateWhen {false}
+        showStandardStreams = true
+    }
 }

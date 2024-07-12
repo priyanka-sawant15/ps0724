@@ -3,12 +3,97 @@
  */
 package org.example;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.example.exception.InvalidDiscountException;
+import org.example.exception.InvalidDurationException;
+import org.example.exception.RentalServiceException;
+
+// import org.junit.Test;
+// import static org.junit.Assert.*;
+
+import org.example.model.RentalTerms;
+import org.example.model.Tool;
+import org.example.service.RentalService;
+import org.example.service.impl.RentalServiceImpl;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class AppTest {
-    // @Test public void appHasAGreeting() {
-    //     App classUnderTest = new App();
-    //     assertNotNull("app should have a greeting", classUnderTest.getGreeting());
-    // }
+    private static RentalService rentalService;
+
+    @BeforeAll
+    public static void initializeService() {
+        rentalService = new RentalServiceImpl();
+        Tool tool = new Tool("LADW","Ladder","Werner",
+                1.99F,true,true,false);
+        rentalService.addTool(tool);
+        tool = new Tool("CHNS","Chainsaw","Stihl",
+                1.49F,true,false,true);
+        rentalService.addTool(tool);
+        tool = new Tool("JAKR","Jackhammer","Ridgid",
+                2.99F,true,false,false);
+        rentalService.addTool(tool);
+        tool = new Tool("JAKD","Jackhammer","DeWalt",
+                2.99F,true,false,false);
+        rentalService.addTool(tool);
+    }
+
+    @Test
+    public void test1() {
+        Assertions.assertThrows(InvalidDiscountException.class, () -> {
+            rentalService.checkout("JAKR", "9/3/2015",5,101);
+        });
+        // RentalTerms agreement = rentalService.checkout("JAKR", "9/3/2015",5,101);
+        // System.out.println(agreement);
+        // Assertions.assertEquals(3.98F, agreement.getPreDiscountCharge());
+        // Assertions.assertEquals(.40F, agreement.getDiscountAmount());
+        // Assertions.assertEquals(2, agreement.getChargeDays());
+        // Assertions.assertEquals(3.58F, agreement.getFinalCharge());
+    }
+
+    @Test
+    public void test2() throws RentalServiceException {
+        RentalTerms agreement = rentalService.checkout("LADW", "7/2/2020",3,10);
+        Assertions.assertEquals(3.98F, agreement.getPreDiscountCharge());
+        Assertions.assertEquals(.40F, agreement.getDiscountAmount());
+        Assertions.assertEquals(2, agreement.getChargeDays());
+        Assertions.assertEquals(3.58F, agreement.getFinalCharge());
+    }
+
+    @Test
+    public void test3() throws RentalServiceException {
+        RentalTerms agreement = rentalService.checkout("CHNS", "7/2/2015",5,25);
+        Assertions.assertEquals(4.47F, agreement.getPreDiscountCharge());
+        Assertions.assertEquals(1.12F, agreement.getDiscountAmount());
+        Assertions.assertEquals(3, agreement.getChargeDays());
+        Assertions.assertEquals(3.35F, agreement.getFinalCharge());
+    }
+
+    @Test
+    public void test4() throws RentalServiceException {
+        RentalTerms agreement = rentalService.checkout("JAKD", "9/3/2015",6,0);
+        Assertions.assertEquals(8.97F, agreement.getPreDiscountCharge());
+        Assertions.assertEquals(0.0F, agreement.getDiscountAmount());
+        Assertions.assertEquals(3, agreement.getChargeDays());
+        Assertions.assertEquals(8.97F, agreement.getFinalCharge());
+    }
+
+    // @Test
+    public void test5() throws RentalServiceException {
+        RentalTerms agreement = rentalService.checkout("JAKR", "7/2/2015",9,0);
+        // System.out.println(agreement);
+        Assertions.assertEquals(3.98F, agreement.getPreDiscountCharge());
+        Assertions.assertEquals(.40F, agreement.getDiscountAmount());
+        Assertions.assertEquals(2, agreement.getChargeDays());
+        Assertions.assertEquals(3.58F, agreement.getFinalCharge());
+    }
+
+    @Test
+    public void test6() throws RentalServiceException {
+        RentalTerms agreement = rentalService.checkout("JAKR", "7/2/2020",4,50);
+        Assertions.assertEquals(2.99F, agreement.getPreDiscountCharge());
+        Assertions.assertEquals(1.50F, agreement.getDiscountAmount());
+        Assertions.assertEquals(1, agreement.getChargeDays());
+        Assertions.assertEquals(1.49F, agreement.getFinalCharge());
+    }
 }
